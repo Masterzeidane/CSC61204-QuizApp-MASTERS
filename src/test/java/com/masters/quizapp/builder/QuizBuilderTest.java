@@ -1,5 +1,7 @@
-package com.masters.quizapp.model;
+package com.masters.quizapp.builder;
 
+import com.masters.quizapp.model.Question;
+import com.masters.quizapp.model.Quiz;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;

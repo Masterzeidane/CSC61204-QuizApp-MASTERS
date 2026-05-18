@@ -1,0 +1,98 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+class Question {
+    - category: String
+    - difficulty: String
+    - questionText: String
+    - correctAnswer: String
+    - incorrectAnswers: List<String>
+    + Question(category: String, difficulty: String, questionText: String, correctAnswer: String, incorrectAnswers: List<String>)
+    + getCategory(): String
+    + getDifficulty(): String
+    + getQuestionText(): String
+    + getCorrectAnswer(): String
+    + getIncorrectAnswers(): List<String>
+    + getShuffledOptions(): List<String>
+}
+
+class Quiz {
+    - title: String
+    - timeLimit: int
+    - passingScore: int
+    - questions: List<Question>
+    # Quiz(title: String, timeLimit: int, passingScore: int, questions: List<Question>)
+    + getTitle(): String
+    + getTimeLimit(): int
+    + getPassingScore(): int
+    + getQuestions(): List<Question>
+}
+
+class QuizBuilder {
+    - {static} DEFAULT_TIME_LIMIT: int
+    - {static} DEFAULT_PASSING_SCORE: int
+    - {static} ERR_EMPTY_TITLE: String
+    - {static} ERR_EMPTY_QUESTIONS: String
+    - title: String
+    - timeLimit: int
+    - passingScore: int
+    - questions: List<Question>
+    + setTitle(title: String): QuizBuilder
+    + setTimeLimit(timeLimit: int): QuizBuilder
+    + setPassingScore(passingScore: int): QuizBuilder
+    + addQuestion(question: Question): QuizBuilder
+    + setQuestions(questions: List<Question>): QuizBuilder
+    + build(): Quiz
+}
+
+interface QuestionSelectionStrategy {
+    + select(bank: List<Question>, amount: int): List<Question>
+}
+
+class RandomSelectionStrategy {
+    - {static} START_INDEX: int
+    - {static} ERR_NOT_ENOUGH_QUESTIONS: String
+    + select(bank: List<Question>, amount: int): List<Question>
+    - validateAmount(bankSize: int, amount: int): void
+}
+
+class QuizApiService {
+    - {static} API_URL_FORMAT: String
+    - {static} HTTP_SUCCESS_MIN: int
+    - {static} HTTP_SUCCESS_MAX: int
+    - httpClient: HttpClient
+    - gson: Gson
+    + QuizApiService()
+    + fetchQuestions(amount: int): List<Question>
+    - buildRequest(amount: int): HttpRequest
+    - isSuccessful(statusCode: int): boolean
+    - parseResponse(jsonBody: String): List<Question>
+    - mapToDomainQuestion(result: OpenTdbResult): Question
+    - getFallbackBank(): List<Question>
+}
+
+class OpenTdbResponse {
+    ~ results: List<OpenTdbResult>
+}
+
+class OpenTdbResult {
+    ~ category: String
+    ~ difficulty: String
+    ~ question: String
+    ~ correctAnswer: String
+    ~ incorrectAnswers: List<String>
+}
+
+Quiz "1" *-- "1..*" Question
+QuizBuilder "1" o-- "0..*" Question
+QuizBuilder ..> Quiz : builds
+
+QuestionSelectionStrategy <|.. RandomSelectionStrategy
+
+QuizApiService +-- OpenTdbResponse
+QuizApiService +-- OpenTdbResult
+OpenTdbResponse "1" *-- "0..*" OpenTdbResult
+
+QuizApiService ..> Question : creates
+
+@enduml

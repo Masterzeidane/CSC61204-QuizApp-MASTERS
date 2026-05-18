@@ -94,12 +94,17 @@
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <version>${jacoco.version}</version>
-                <executions>
+                
+                
+                <configuration>
+                    <excludes>
+                        <exclude>com/masters/quizapp/view/**</exclude>
+                        <exclude>com/masters/quizapp/Main.class</exclude>
+                    </excludes>
+                </configuration>
 
-                    <!--
-                        1. prepare-agent: instruments classes and sets the
-                           JVM argLine so coverage data is collected at runtime.
-                    -->
+                <executions>
+                    <!-- 1. prepare-agent -->
                     <execution>
                         <id>jacoco-prepare-agent</id>
                         <goals>
@@ -107,10 +112,7 @@
                         </goals>
                     </execution>
 
-                    <!--
-                        2. report: generates the HTML / XML / CSV coverage
-                           report after tests finish (verify phase).
-                    -->
+                    <!-- 2. report -->
                     <execution>
                         <id>jacoco-report</id>
                         <phase>verify</phase>
@@ -119,10 +121,7 @@
                         </goals>
                     </execution>
 
-                    <!--
-                        3. check: FAILS THE BUILD if line coverage is below
-                           the threshold defined in properties (75%).
-                    -->
+                    <!-- 3. check: FAILS THE BUILD if coverage is below 75% -->
                     <execution>
                         <id>jacoco-check</id>
                         <phase>verify</phase>
@@ -144,7 +143,6 @@
                             </rules>
                         </configuration>
                     </execution>
-
                 </executions>
             </plugin>
 

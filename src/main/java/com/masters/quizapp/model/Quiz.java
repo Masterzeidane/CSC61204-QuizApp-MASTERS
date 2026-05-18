@@ -1,4 +1,4 @@
-package com.groupname.quizapp.model;
+package com.masters.quizapp.model;
 
 import java.util.Collections;
 import java.util.List;
@@ -17,10 +17,10 @@ public class Quiz {
     /**
      * Protected constructor to enforce the use of the Builder pattern.
      *
-     * @param title the title of the quiz
-     * @param timeLimit the time limit in minutes (or seconds)
+     * @param title        the title of the quiz
+     * @param timeLimit    the time limit in minutes (or seconds)
      * @param passingScore the required score to pass
-     * @param questions the list of questions in this quiz
+     * @param questions    the list of questions in this quiz
      */
     protected Quiz(String title, int timeLimit, int passingScore, List<Question> questions) {
         this.title = title;

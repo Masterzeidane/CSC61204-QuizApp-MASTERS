@@ -1,4 +1,4 @@
-package com.groupname.quizapp;
+package com.masters.quizapp;
 
 /**
  * Application entry point for the Educational Testing System.

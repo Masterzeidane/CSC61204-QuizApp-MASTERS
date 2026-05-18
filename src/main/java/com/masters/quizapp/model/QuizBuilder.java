@@ -1,4 +1,4 @@
-package com.groupname.quizapp.model;
+package com.masters.quizapp.model;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +10,7 @@ public class QuizBuilder {
 
     private static final int DEFAULT_TIME_LIMIT = 30;
     private static final int DEFAULT_PASSING_SCORE = 0;
-    
+
     private static final String ERR_EMPTY_TITLE = "Quiz title cannot be empty.";
     private static final String ERR_EMPTY_QUESTIONS = "Quiz must contain at least one question.";
 
@@ -79,7 +79,7 @@ public class QuizBuilder {
      *
      * @return a fully constructed Quiz
      * @throws IllegalArgumentException if the title is empty
-     * @throws IllegalStateException if the questions list is empty
+     * @throws IllegalStateException    if the questions list is empty
      */
     public Quiz build() {
         if (title == null || title.trim().isEmpty()) {

@@ -1,5 +1,7 @@
-package com.masters.quizapp.model;
+package com.masters.quizapp.builder;
 
+import com.masters.quizapp.model.Question;
+import com.masters.quizapp.model.Quiz;
 import java.util.ArrayList;
 import java.util.List;
 

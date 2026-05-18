@@ -2,7 +2,7 @@ package com.masters.quizapp.controller;
 
 import com.masters.quizapp.model.Question;
 import com.masters.quizapp.model.Quiz;
-import com.masters.quizapp.model.QuizBuilder;
+import com.masters.quizapp.builder.QuizBuilder;
 import com.masters.quizapp.service.QuizApiService;
 
 import java.util.List;

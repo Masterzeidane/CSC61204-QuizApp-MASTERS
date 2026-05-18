@@ -22,7 +22,7 @@ public class Quiz {
      * @param passingScore the required score to pass
      * @param questions    the list of questions in this quiz
      */
-    protected Quiz(String title, int timeLimit, int passingScore, List<Question> questions) {
+    public Quiz(String title, int timeLimit, int passingScore, List<Question> questions) {
         this.title = title;
         this.timeLimit = timeLimit;
         this.passingScore = passingScore;

@@ -4,6 +4,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
+import com.masters.quizapp.builder.QuizBuilder;
+
 import java.util.Arrays;
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.groupname.quizapp.model;
+package com.masters.quizapp.model;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -18,14 +18,14 @@ public class Question {
     /**
      * Constructs a new Question.
      *
-     * @param category the category of the question
-     * @param difficulty the difficulty level
-     * @param questionText the actual text of the question
-     * @param correctAnswer the correct answer string
+     * @param category         the category of the question
+     * @param difficulty       the difficulty level
+     * @param questionText     the actual text of the question
+     * @param correctAnswer    the correct answer string
      * @param incorrectAnswers a list of incorrect answer strings
      */
     public Question(String category, String difficulty, String questionText,
-                    String correctAnswer, List<String> incorrectAnswers) {
+            String correctAnswer, List<String> incorrectAnswers) {
         this.category = category;
         this.difficulty = difficulty;
         this.questionText = questionText;
@@ -79,7 +79,8 @@ public class Question {
     }
 
     /**
-     * Returns a list of all possible answers (correct and incorrect), shuffled randomly.
+     * Returns a list of all possible answers (correct and incorrect), shuffled
+     * randomly.
      *
      * @return a shuffled list of all options
      */

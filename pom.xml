@@ -20,8 +20,7 @@
     <!-- ===== Properties ===== -->
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
+        <maven.compiler.release>21</maven.compiler.release>
 
         <!-- Dependency versions -->
         <junit.jupiter.version>5.10.2</junit.jupiter.version>

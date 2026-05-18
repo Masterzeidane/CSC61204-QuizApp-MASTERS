@@ -1,10 +1,12 @@
-package com.groupname.quizapp.strategy;
+package com.masters.quizapp.strategy;
 
-import com.groupname.quizapp.model.Question;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
+
+import com.masters.quizapp.model.Question;
+
 
 import java.util.Arrays;
 import java.util.List;
@@ -34,24 +36,22 @@ class RandomSelectionStrategyTest {
 
         assertAll("Verify selected questions",
                 () -> assertEquals(2, selected.size(), "Should return exactly 2 questions"),
-                () -> assertTrue(questionBank.containsAll(selected), "Selected questions must be from the bank")
-        );
+                () -> assertTrue(questionBank.containsAll(selected), "Selected questions must be from the bank"));
     }
 
     @Test
     void select_exactBankSize_returnsAllQuestionsShuffled() {
         List<Question> selected = strategy.select(questionBank, 3);
-        
+
         assertAll("Verify full bank selection",
                 () -> assertEquals(3, selected.size(), "Should return all 3 questions"),
-                () -> assertTrue(selected.containsAll(questionBank), "Selected must contain all bank questions")
-        );
+                () -> assertTrue(selected.containsAll(questionBank), "Selected must contain all bank questions"));
     }
 
     @ParameterizedTest
-    @ValueSource(ints = {4, 10, 100})
+    @ValueSource(ints = { 4, 10, 100 })
     void select_amountExceedsBankSize_throwsIllegalArgumentException(int invalidAmount) {
-        assertThrows(IllegalArgumentException.class, 
+        assertThrows(IllegalArgumentException.class,
                 () -> strategy.select(questionBank, invalidAmount),
                 "Selecting more questions than available should throw exception");
     }

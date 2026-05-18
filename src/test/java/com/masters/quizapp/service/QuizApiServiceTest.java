@@ -39,4 +39,26 @@ class QuizApiServiceTest {
                 () -> assertFalse(questions.get(0).getQuestionText().trim().isEmpty(),
                         "First question text should not be empty"));
     }
+
+    @Test
+    void fetchQuestions_simulatedNetworkFailure_returnsFallbackQuestions() {
+        // Arrange
+        int amountToFetch = 3;
+        
+        // Act
+        // Interrupt the current thread to simulate an InterruptedException when httpClient.send is called
+        Thread.currentThread().interrupt();
+        List<Question> questions = apiService.fetchQuestions(amountToFetch);
+        
+        // Clear the interrupted status so subsequent tests are not affected
+        Thread.interrupted();
+
+        // Assert
+        assertAll("Verify fallback questions on failure",
+                () -> assertNotNull(questions, "Returned fallback list should not be null"),
+                () -> assertEquals(5, questions.size(), "Should return exactly 5 fallback questions"),
+                () -> assertEquals("Software Architecture", questions.get(0).getCategory(), "First fallback should be Software Architecture"),
+                () -> assertEquals("Controller", questions.get(0).getCorrectAnswer(), "First fallback correct answer should be Controller")
+        );
+    }
 }

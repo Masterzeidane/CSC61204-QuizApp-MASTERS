@@ -88,10 +88,22 @@ public class QuizApiService {
 
     private List<Question> getFallbackBank() {
         return Arrays.asList(
-                new Question("Fallback", "Easy", "Is this a fallback question?",
-                        "Yes", Arrays.asList("No", "Maybe", "Unsure")),
-                new Question("Fallback", "Easy", "What is 2 + 2?",
-                        "4", Arrays.asList("1", "2", "3")));
+                new Question("Software Architecture", "Medium", 
+                        "In the MVC architectural pattern, which component is responsible for handling user input and updating the model?",
+                        "Controller", Arrays.asList("View", "Model", "Observer")),
+                new Question("Software Design", "Medium", 
+                        "Which SOLID principle states that a class should have only one reason to change?",
+                        "Single Responsibility Principle", Arrays.asList("Open/Closed Principle", "Liskov Substitution Principle", "Dependency Inversion Principle")),
+                new Question("Object-Oriented Programming", "Easy", 
+                        "Which core OOP concept refers to the bundling of data and the methods that operate on that data into a single unit?",
+                        "Encapsulation", Arrays.asList("Inheritance", "Polymorphism", "Abstraction")),
+                new Question("Design Patterns", "Hard", 
+                        "Which creational design pattern is best suited for constructing complex objects step by step?",
+                        "Builder", Arrays.asList("Singleton", "Factory Method", "Adapter")),
+                new Question("Software Design", "Hard", 
+                        "The Open/Closed Principle dictates that software entities should be open for extension but closed for what?",
+                        "Modification", Arrays.asList("Instantiation", "Inheritance", "Execution"))
+        );
     }
 
     // --- Private Helper DTOs for Gson Mapping ---

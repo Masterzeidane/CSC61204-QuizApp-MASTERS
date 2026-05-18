@@ -98,8 +98,11 @@
                 
                 <configuration>
                     <excludes>
-                        <exclude>com/masters/quizapp/view/**</exclude>
                         <exclude>com/masters/quizapp/Main.class</exclude>
+                        <exclude>**/MainFrame*</exclude>
+                        <exclude>**/*View*</exclude>
+                        <exclude>**/view/**</exclude>
+                        <exclude>**/ui/**</exclude>
                     </excludes>
                 </configuration>
 

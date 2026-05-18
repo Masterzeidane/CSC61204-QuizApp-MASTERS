@@ -1,0 +1,29 @@
+name: Java CI with Maven
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up JDK 17
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+        cache: maven
+
+    - name: Build with Maven, Run Tests, and Check Coverage
+      # We use 'verify' instead of just 'test' because in the pom.xml,
+      # the JaCoCo coverage check (jacoco:check) is bound to the 'verify' phase.
+      # Running 'verify' ensures tests run, the report is generated, 
+      # and the build fails if coverage is below 75%.
+      run: mvn clean verify

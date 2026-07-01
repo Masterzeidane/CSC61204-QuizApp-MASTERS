@@ -6,6 +6,8 @@ import org.junit.jupiter.api.Test;
 import com.masters.quizapp.model.Question;
 
 
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -26,18 +28,46 @@ class QuizApiServiceTest {
     void fetchQuestions_validApiCall_returnsListOfQuestions() {
         // Arrange
         int amountToFetch = 3;
+        QuizApiService stubApiService = new QuizApiService() {
+            @Override
+            HttpResponse<String> sendRequest(HttpRequest request) throws Exception {
+                return new HttpResponse<String>() {
+                    @Override
+                    public int statusCode() { return 200; }
+                    @Override
+                    public HttpRequest request() { return null; }
+                    @Override
+                    public java.util.Optional<HttpResponse<String>> previousResponse() { return java.util.Optional.empty(); }
+                    @Override
+                    public java.net.http.HttpHeaders headers() { return null; }
+                    @Override
+                    public String body() {
+                        return "{\"response_code\":0,\"results\":["
+                                + "{\"category\":\"General\",\"type\":\"multiple\",\"difficulty\":\"easy\",\"question\":\"Q1\",\"correct_answer\":\"A1\",\"incorrect_answers\":[\"A2\",\"A3\",\"A4\"]},"
+                                + "{\"category\":\"General\",\"type\":\"multiple\",\"difficulty\":\"easy\",\"question\":\"Q2\",\"correct_answer\":\"A1\",\"incorrect_answers\":[\"A2\",\"A3\",\"A4\"]},"
+                                + "{\"category\":\"General\",\"type\":\"multiple\",\"difficulty\":\"easy\",\"question\":\"Q3\",\"correct_answer\":\"A1\",\"incorrect_answers\":[\"A2\",\"A3\",\"A4\"]}"
+                                + "]}";
+                    }
+                    @Override
+                    public java.util.Optional<javax.net.ssl.SSLSession> sslSession() { return java.util.Optional.empty(); }
+                    @Override
+                    public java.net.URI uri() { return null; }
+                    @Override
+                    public java.net.http.HttpClient.Version version() { return null; }
+                };
+            }
+        };
 
         // Act
-        // This makes a real HTTP request to the OpenTDB API.
-        List<Question> questions = apiService.fetchQuestions(amountToFetch);
+        List<Question> questions = stubApiService.fetchQuestions(amountToFetch);
 
         // Assert
         assertAll("Verify fetched questions",
                 () -> assertNotNull(questions, "Returned question list should not be null"),
                 () -> assertEquals(amountToFetch, questions.size(), "Should fetch exactly 3 questions"),
-                () -> assertNotNull(questions.get(0).getQuestionText(), "First question text should not be null"),
-                () -> assertFalse(questions.get(0).getQuestionText().trim().isEmpty(),
-                        "First question text should not be empty"));
+                () -> assertEquals("Q1", questions.get(0).getQuestionText(), "First question text should match"),
+                () -> assertEquals("A1", questions.get(0).getCorrectAnswer(), "First correct answer should match")
+        );
     }
 
     @Test

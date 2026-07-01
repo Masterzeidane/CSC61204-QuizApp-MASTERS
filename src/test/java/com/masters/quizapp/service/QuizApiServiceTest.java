@@ -61,4 +61,17 @@ class QuizApiServiceTest {
                 () -> assertEquals("Controller", questions.get(0).getCorrectAnswer(), "First fallback correct answer should be Controller")
         );
     }
+
+    @Test
+    void unescapeHtml_variousHtmlEntities_returnsDecodedStrings() {
+        assertAll("HTML decoding verification",
+                () -> assertEquals("Hello \"World\"", apiService.unescapeHtml("Hello &quot;World&quot;"), "Should decode double quotes"),
+                () -> assertEquals("It's a test", apiService.unescapeHtml("It&#039;s a test"), "Should decode decimal single quotes"),
+                () -> assertEquals("It's a test", apiService.unescapeHtml("It&#x27;s a test"), "Should decode hex single quotes"),
+                () -> assertEquals("A & B", apiService.unescapeHtml("A &amp; B"), "Should decode ampersands"),
+                () -> assertEquals("1 < 2", apiService.unescapeHtml("1 &lt; 2"), "Should decode less than"),
+                () -> assertEquals("2 > 1", apiService.unescapeHtml("2 &gt; 1"), "Should decode greater than"),
+                () -> assertEquals("Unicode: é, °, —", apiService.unescapeHtml("Unicode: &#233;, &deg;, &mdash;"), "Should decode various unicode/named entities")
+        );
+    }
 }

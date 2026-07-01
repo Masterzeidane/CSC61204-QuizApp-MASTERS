@@ -79,11 +79,72 @@ public class QuizApiService {
 
     private Question mapToDomainQuestion(OpenTdbResult result) {
         return new Question(
-                result.category,
-                result.difficulty,
-                result.question,
-                result.correctAnswer,
-                result.incorrectAnswers);
+                unescapeHtml(result.category),
+                unescapeHtml(result.difficulty),
+                unescapeHtml(result.question),
+                unescapeHtml(result.correctAnswer),
+                unescapeHtmlList(result.incorrectAnswers));
+    }
+
+    String unescapeHtml(String input) {
+        if (input == null || !input.contains("&")) {
+            return input;
+        }
+
+        java.util.Map<String, String> commonEntities = new java.util.HashMap<>();
+        commonEntities.put("&quot;", "\"");
+        commonEntities.put("&amp;", "&");
+        commonEntities.put("&lt;", "<");
+        commonEntities.put("&gt;", ">");
+        commonEntities.put("&apos;", "'");
+        commonEntities.put("&ldquo;", "\"");
+        commonEntities.put("&rdquo;", "\"");
+        commonEntities.put("&lsquo;", "'");
+        commonEntities.put("&rsquo;", "'");
+        commonEntities.put("&ndash;", "-");
+        commonEntities.put("&mdash;", "—");
+        commonEntities.put("&deg;", "°");
+
+        java.util.regex.Pattern pattern = java.util.regex.Pattern.compile("&[a-zA-Z0-9#]+;");
+        java.util.regex.Matcher matcher = pattern.matcher(input);
+        StringBuilder sb = new StringBuilder();
+        int lastEnd = 0;
+
+        while (matcher.find()) {
+            sb.append(input, lastEnd, matcher.start());
+            String entity = matcher.group();
+            if (commonEntities.containsKey(entity)) {
+                sb.append(commonEntities.get(entity));
+            } else if (entity.startsWith("&#x") || entity.startsWith("&#X")) {
+                try {
+                    int code = Integer.parseInt(entity.substring(3, entity.length() - 1), 16);
+                    sb.append((char) code);
+                } catch (NumberFormatException e) {
+                    sb.append(entity);
+                }
+            } else if (entity.startsWith("&#")) {
+                try {
+                    int code = Integer.parseInt(entity.substring(2, entity.length() - 1));
+                    sb.append((char) code);
+                } catch (NumberFormatException e) {
+                    sb.append(entity);
+                }
+            } else {
+                sb.append(entity);
+            }
+            lastEnd = matcher.end();
+        }
+        sb.append(input.substring(lastEnd));
+        return sb.toString();
+    }
+
+    private List<String> unescapeHtmlList(List<String> list) {
+        if (list == null) return null;
+        List<String> unescaped = new ArrayList<>();
+        for (String s : list) {
+            unescaped.add(unescapeHtml(s));
+        }
+        return unescaped;
     }
 
     private List<Question> getFallbackBank() {

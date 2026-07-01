@@ -11,11 +11,15 @@ import java.net.http.HttpResponse;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Service for communicating with the Open Trivia Database API.
  */
 public class QuizApiService {
+
+    private static final Logger LOGGER = Logger.getLogger(QuizApiService.class.getName());
 
     private static final String API_URL_FORMAT = "https://opentdb.com/api.php?amount=%d&type=multiple";
     private static final int HTTP_SUCCESS_MIN = 200;
@@ -49,9 +53,10 @@ public class QuizApiService {
             if (isSuccessful(response.statusCode())) {
                 return parseResponse(response.body());
             }
+            LOGGER.log(Level.WARNING, "API request failed with status code: {0}. Falling back to local question bank.", response.statusCode());
             return getFallbackBank();
         } catch (Exception e) {
-            // Silently swallow exception and gracefully degrade
+            LOGGER.log(Level.SEVERE, "Exception occurred while fetching questions: {0}. Falling back to local question bank.", e.getMessage());
             return getFallbackBank();
         }
     }

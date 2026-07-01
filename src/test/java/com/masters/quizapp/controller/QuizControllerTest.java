@@ -5,6 +5,8 @@ import com.masters.quizapp.model.Quiz;
 import com.masters.quizapp.service.QuizApiService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.Arrays;
 import java.util.List;
@@ -72,12 +74,12 @@ public class QuizControllerTest {
         );
     }
 
-    @Test
-    public void submitAnswer_correctAnswerDifferentCase_incrementsScore() {
+    @ParameterizedTest
+    @ValueSource(strings = {"YES", "yes", "yEs", "Yes"})
+    public void submitAnswer_correctAnswerDifferentCase_incrementsScore(String answer) {
         controller.startNewQuiz(2, "easy");
         
-        // "yEs" instead of "Yes"
-        boolean isCorrect = controller.submitAnswer("yEs");
+        boolean isCorrect = controller.submitAnswer(answer);
 
         assertAll("Case Insensitive Verification",
                 () -> assertTrue(isCorrect, "Answer evaluation should be case-insensitive"),

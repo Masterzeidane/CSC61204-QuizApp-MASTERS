@@ -39,6 +39,9 @@ public class QuizBuilder {
      * @return the current builder instance
      */
     public QuizBuilder setTimeLimit(int timeLimit) {
+        if (timeLimit < 0) {
+            throw new IllegalArgumentException("Time limit cannot be negative.");
+        }
         this.timeLimit = timeLimit;
         return this;
     }

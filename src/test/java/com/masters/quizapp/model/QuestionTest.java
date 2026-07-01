@@ -1,7 +1,6 @@
 package com.masters.quizapp.model;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import com.masters.quizapp.builder.QuizBuilder;
@@ -46,13 +45,12 @@ class QuestionTest {
                 "Correct answer should match constructor input");
     }
 
-    // Deliberately failing test case for Section 4.2
+    // Test case for Section 4.2
     @Test
-    @Disabled("Deliberately failing test for Section 4.2 requirement. Disabled to keep CI green.")
     public void setTimeLimit_negativeValue_throwsIllegalArgumentException() {
         QuizBuilder builder = new QuizBuilder();
-        // The system does not currently validate negative time limits,
-        // so this assertThrows will FAIL, exactly as required by the assignment.
+        // The system now validates negative time limits, so this assertThrows will
+        // succeed.
         assertThrows(IllegalArgumentException.class, () -> {
             builder.setTimeLimit(-10);
         });

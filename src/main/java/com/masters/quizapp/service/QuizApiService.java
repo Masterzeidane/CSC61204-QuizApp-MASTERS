@@ -46,24 +46,54 @@ public class QuizApiService {
      * @return a list of parsed Question objects, or fallback questions on failure
      */
     public List<Question> fetchQuestions(int amount) {
+        return fetchQuestions(amount, null);
+    }
+
+    /**
+     * Fetches questions from the Open Trivia Database API with a specified difficulty.
+     * Uses graceful degradation: in case of network errors or non-2xx responses,
+     * it returns a fallback local bank while logging the failure details.
+     *
+     * @param amount the number of questions to fetch
+     * @param difficulty the requested difficulty level (easy, medium, hard)
+     * @return a list of parsed Question objects, or fallback questions on failure
+     */
+    public List<Question> fetchQuestions(int amount, String difficulty) {
         try {
-            HttpRequest request = buildRequest(amount);
+            HttpRequest request = buildRequest(amount, difficulty);
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 
             if (isSuccessful(response.statusCode())) {
                 return parseResponse(response.body());
             }
             LOGGER.log(Level.WARNING, "API request failed with status code: {0}. Falling back to local question bank.", response.statusCode());
-            return getFallbackBank();
+            return getFallbackBank(difficulty);
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Exception occurred while fetching questions: {0}. Falling back to local question bank.", e.getMessage());
-            return getFallbackBank();
+            return getFallbackBank(difficulty);
         }
     }
 
-    private HttpRequest buildRequest(int amount) {
+    private HttpRequest buildRequest(int amount, String difficulty) {
         String url = String.format(API_URL_FORMAT, amount);
+        if (difficulty != null && !difficulty.trim().isEmpty()) {
+            url += "&difficulty=" + difficulty.trim().toLowerCase();
+        }
         return HttpRequest.newBuilder().uri(URI.create(url)).GET().build();
+    }
+
+    private List<Question> getFallbackBank(String difficulty) {
+        List<Question> allFallback = getFallbackBank();
+        if (difficulty == null || difficulty.trim().isEmpty()) {
+            return allFallback;
+        }
+        List<Question> filtered = new ArrayList<>();
+        for (Question q : allFallback) {
+            if (q.getDifficulty().equalsIgnoreCase(difficulty)) {
+                filtered.add(q);
+            }
+        }
+        return filtered.isEmpty() ? allFallback : filtered;
     }
 
     private boolean isSuccessful(int statusCode) {

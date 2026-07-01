@@ -74,4 +74,26 @@ class QuizApiServiceTest {
                 () -> assertEquals("Unicode: é, °, —", apiService.unescapeHtml("Unicode: &#233;, &deg;, &mdash;"), "Should decode various unicode/named entities")
         );
     }
+
+    @Test
+    void fetchQuestions_withDifficultyAndNetworkFailure_returnsFilteredFallbackQuestions() {
+        // Arrange
+        int amountToFetch = 3;
+        
+        // Act
+        // Interrupt the current thread to simulate network failure
+        Thread.currentThread().interrupt();
+        List<Question> questions = apiService.fetchQuestions(amountToFetch, "easy");
+        
+        // Clear the interrupted status
+        Thread.interrupted();
+
+        // Assert
+        assertAll("Verify filtered fallback questions",
+                () -> assertNotNull(questions, "Returned fallback list should not be null"),
+                () -> assertEquals(1, questions.size(), "Should return exactly 1 easy fallback question"),
+                () -> assertEquals("Object-Oriented Programming", questions.get(0).getCategory(), "Category should be Object-Oriented Programming"),
+                () -> assertEquals("Easy", questions.get(0).getDifficulty(), "Difficulty should be Easy")
+        );
+    }
 }

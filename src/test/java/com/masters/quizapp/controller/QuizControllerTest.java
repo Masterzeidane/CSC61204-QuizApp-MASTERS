@@ -24,6 +24,11 @@ public class QuizControllerTest {
         // This overrides the fetchQuestions method to return deterministic data
         mockApiService = new QuizApiService() {
             @Override
+            public List<Question> fetchQuestions(int amount, String difficulty) {
+                return fetchQuestions(amount);
+            }
+
+            @Override
             public List<Question> fetchQuestions(int amount) {
                 return Arrays.asList(
                         new Question("Science", "easy", "Is the Earth round?", "Yes", Arrays.asList("No", "Maybe", "Unsure")),

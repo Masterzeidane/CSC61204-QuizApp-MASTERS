@@ -32,15 +32,13 @@ public class QuizController {
     }
 
     /**
-     * Starts a new quiz by fetching questions and initializing the model.
-     * Note: Current API service implementation ignores difficulty, but it is included
-     * for future extension and display purposes.
+     * Starts a new quiz by fetching questions of the requested difficulty and initializing the model.
      *
      * @param amount the number of questions to fetch
      * @param difficulty the requested difficulty level
      */
     public void startNewQuiz(int amount, String difficulty) {
-        List<Question> questions = apiService.fetchQuestions(amount);
+        List<Question> questions = apiService.fetchQuestions(amount, difficulty);
         
         currentQuiz = new QuizBuilder()
                 .setTitle("Trivia Quiz - " + difficulty)

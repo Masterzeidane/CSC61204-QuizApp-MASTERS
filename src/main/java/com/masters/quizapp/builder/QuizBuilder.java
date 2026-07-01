@@ -53,6 +53,9 @@ public class QuizBuilder {
      * @return the current builder instance
      */
     public QuizBuilder setPassingScore(int passingScore) {
+        if (passingScore < 0) {
+            throw new IllegalArgumentException("Passing score cannot be negative.");
+        }
         this.passingScore = passingScore;
         return this;
     }

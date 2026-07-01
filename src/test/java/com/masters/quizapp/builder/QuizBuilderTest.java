@@ -81,7 +81,13 @@ class QuizBuilderTest {
                                 .setTitle("Valid Title")
                                 .setQuestions(null); // Explicitly null
 
-                assertThrows(IllegalStateException.class, builder::build,
-                                "Building with null questions list should throw exception");
-        }
+        assertThrows(IllegalStateException.class, builder::build,
+                        "Building with null questions list should throw exception");
+    }
+
+    @Test
+    void setPassingScore_negativeValue_throwsIllegalArgumentException() {
+        assertThrows(IllegalArgumentException.class, () -> new QuizBuilder().setPassingScore(-5), 
+                        "Negative passing score should throw exception");
+    }
 }

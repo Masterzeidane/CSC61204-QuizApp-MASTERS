@@ -61,7 +61,7 @@ public class QuizApiService {
     public List<Question> fetchQuestions(int amount, String difficulty) {
         try {
             HttpRequest request = buildRequest(amount, difficulty);
-            HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+            HttpResponse<String> response = sendRequest(request);
 
             if (isSuccessful(response.statusCode())) {
                 return parseResponse(response.body());
@@ -80,6 +80,10 @@ public class QuizApiService {
             url += "&difficulty=" + difficulty.trim().toLowerCase();
         }
         return HttpRequest.newBuilder().uri(URI.create(url)).GET().build();
+    }
+
+    HttpResponse<String> sendRequest(HttpRequest request) throws Exception {
+        return httpClient.send(request, HttpResponse.BodyHandlers.ofString());
     }
 
     private List<Question> getFallbackBank(String difficulty) {

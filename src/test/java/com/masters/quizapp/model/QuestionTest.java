@@ -3,8 +3,6 @@ package com.masters.quizapp.model;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import com.masters.quizapp.builder.QuizBuilder;
-
 import java.util.Arrays;
 import java.util.List;
 
@@ -43,17 +41,6 @@ class QuestionTest {
     void getCorrectAnswer_validInitialization_returnsCorrectAnswer() {
         assertEquals("299,792,458 m/s", question.getCorrectAnswer(),
                 "Correct answer should match constructor input");
-    }
-
-    // Test case for Section 4.2
-    @Test
-    public void setTimeLimit_negativeValue_throwsIllegalArgumentException() {
-        QuizBuilder builder = new QuizBuilder();
-        // The system now validates negative time limits, so this assertThrows will
-        // succeed.
-        assertThrows(IllegalArgumentException.class, () -> {
-            builder.setTimeLimit(-10);
-        });
     }
 
     @Test

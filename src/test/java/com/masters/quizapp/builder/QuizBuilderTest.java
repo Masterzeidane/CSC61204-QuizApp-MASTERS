@@ -90,4 +90,12 @@ class QuizBuilderTest {
         assertThrows(IllegalArgumentException.class, () -> new QuizBuilder().setPassingScore(-5), 
                         "Negative passing score should throw exception");
     }
+
+    @Test
+    void setTimeLimit_negativeValue_throwsIllegalArgumentException() {
+        QuizBuilder builder = new QuizBuilder();
+        assertThrows(IllegalArgumentException.class, () -> {
+            builder.setTimeLimit(-10);
+        });
+    }
 }

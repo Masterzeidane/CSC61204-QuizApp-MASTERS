@@ -144,4 +144,16 @@ public class QuizControllerTest {
 
         assertEquals("Quiz is already finished or not started.", exception.getMessage());
     }
+
+    @Test
+    public void isOfflineMode_queryStatus_returnsTrueIfFallbackTriggered() {
+        QuizApiService offlineApiService = new QuizApiService() {
+            @Override
+            public boolean isFallbackTriggered() {
+                return true;
+            }
+        };
+        QuizController offlineController = new QuizController(offlineApiService);
+        assertTrue(offlineController.isOfflineMode(), "isOfflineMode should return true if API service fallback is triggered");
+    }
 }

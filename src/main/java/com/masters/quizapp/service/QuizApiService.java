@@ -27,6 +27,7 @@ public class QuizApiService {
 
     private final HttpClient httpClient;
     private final Gson gson;
+    private boolean fallbackTriggered;
 
     /**
      * Constructs the QuizApiService and initializes the HTTP client and Gson
@@ -35,6 +36,7 @@ public class QuizApiService {
     public QuizApiService() {
         this.httpClient = HttpClient.newHttpClient();
         this.gson = new Gson();
+        this.fallbackTriggered = false;
     }
 
     /**
@@ -59,6 +61,7 @@ public class QuizApiService {
      * @return a list of parsed Question objects, or fallback questions on failure
      */
     public List<Question> fetchQuestions(int amount, String difficulty) {
+        this.fallbackTriggered = false;
         try {
             HttpRequest request = buildRequest(amount, difficulty);
             HttpResponse<String> response = sendRequest(request);
@@ -67,11 +70,22 @@ public class QuizApiService {
                 return parseResponse(response.body());
             }
             LOGGER.log(Level.WARNING, "API request failed with status code: {0}. Falling back to local question bank.", response.statusCode());
+            this.fallbackTriggered = true;
             return getFallbackBank(difficulty);
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Exception occurred while fetching questions: {0}. Falling back to local question bank.", e.getMessage());
+            this.fallbackTriggered = true;
             return getFallbackBank(difficulty);
         }
+    }
+
+    /**
+     * Checks if the fallback question bank was triggered on the last fetch.
+     *
+     * @return true if fallback was triggered, false otherwise
+     */
+    public boolean isFallbackTriggered() {
+        return fallbackTriggered;
     }
 
     private HttpRequest buildRequest(int amount, String difficulty) {

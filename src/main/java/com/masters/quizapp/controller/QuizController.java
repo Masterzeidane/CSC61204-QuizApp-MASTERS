@@ -111,4 +111,13 @@ public class QuizController {
     public Quiz getCurrentQuiz() {
         return currentQuiz;
     }
+
+    /**
+     * Checks if the quiz is running in offline mode (using built-in question bank).
+     *
+     * @return true if running in offline mode, false otherwise
+     */
+    public boolean isOfflineMode() {
+        return apiService.isFallbackTriggered();
+    }
 }

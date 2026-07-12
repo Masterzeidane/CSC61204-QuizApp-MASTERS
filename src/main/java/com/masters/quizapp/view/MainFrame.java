@@ -26,6 +26,7 @@ public class MainFrame extends JFrame {
     private JComboBox<Integer> amountDropdown;
     private JComboBox<String> difficultyDropdown;
     private JLabel questionLabel;
+    private JLabel offlineLabel;
     private ButtonGroup optionsGroup;
     private JRadioButton[] optionButtons;
     private JLabel scoreLabel;
@@ -96,9 +97,24 @@ public class MainFrame extends JFrame {
         JPanel panel = new JPanel(new BorderLayout(15, 15));
         panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
+        JPanel topPanel = new JPanel();
+        topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.Y_AXIS));
+
+        offlineLabel = new JLabel("Offline mode: using built-in question bank");
+        offlineLabel.setFont(new Font("Arial", Font.BOLD | Font.ITALIC, 13));
+        offlineLabel.setForeground(Color.RED);
+        offlineLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        offlineLabel.setVisible(false);
+
         questionLabel = new JLabel("Question text...");
         questionLabel.setFont(new Font("Arial", Font.BOLD, 16));
-        panel.add(questionLabel, BorderLayout.NORTH);
+        questionLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+        topPanel.add(offlineLabel);
+        topPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+        topPanel.add(questionLabel);
+
+        panel.add(topPanel, BorderLayout.NORTH);
 
         JPanel optionsPanel = new JPanel(new GridLayout(4, 1, 10, 10));
         optionsGroup = new ButtonGroup();
@@ -151,6 +167,9 @@ public class MainFrame extends JFrame {
         
         // Pure delegation to controller
         controller.startNewQuiz(amount, diff);
+        
+        // Update offline label visibility
+        offlineLabel.setVisible(controller.isOfflineMode());
         
         loadNextQuestion();
         cardLayout.show(mainPanel, PANEL_TESTING);

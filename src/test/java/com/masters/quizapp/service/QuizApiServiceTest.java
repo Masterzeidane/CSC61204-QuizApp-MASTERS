@@ -86,7 +86,8 @@ class QuizApiServiceTest {
                 () -> assertNotNull(questions, "Returned question list should not be null"),
                 () -> assertEquals(amountToFetch, questions.size(), "Should fetch exactly 3 questions"),
                 () -> assertEquals("Q1", questions.get(0).getQuestionText(), "First question text should match"),
-                () -> assertEquals("A1", questions.get(0).getCorrectAnswer(), "First correct answer should match"));
+                () -> assertEquals("A1", questions.get(0).getCorrectAnswer(), "First correct answer should match"),
+                () -> assertFalse(stubApiService.isFallbackTriggered(), "Fallback should not be triggered on successful API call"));
     }
 
     @Test
@@ -110,7 +111,8 @@ class QuizApiServiceTest {
                 () -> assertEquals("Software Architecture", questions.get(0).getCategory(),
                         "First fallback should be Software Architecture"),
                 () -> assertEquals("Controller", questions.get(0).getCorrectAnswer(),
-                        "First fallback correct answer should be Controller"));
+                        "First fallback correct answer should be Controller"),
+                () -> assertTrue(apiService.isFallbackTriggered(), "Fallback should be triggered on network failure"));
     }
 
     @Test
@@ -148,6 +150,7 @@ class QuizApiServiceTest {
                 () -> assertEquals(1, questions.size(), "Should return exactly 1 easy fallback question"),
                 () -> assertEquals("Object-Oriented Programming", questions.get(0).getCategory(),
                         "Category should be Object-Oriented Programming"),
-                () -> assertEquals("Easy", questions.get(0).getDifficulty(), "Difficulty should be Easy"));
+                () -> assertEquals("Easy", questions.get(0).getDifficulty(), "Difficulty should be Easy"),
+                () -> assertTrue(apiService.isFallbackTriggered(), "Fallback should be triggered on difficulty-based fetch network failure"));
     }
 }

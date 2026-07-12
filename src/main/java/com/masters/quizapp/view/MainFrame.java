@@ -3,6 +3,8 @@ package com.masters.quizapp.view;
 import com.masters.quizapp.controller.QuizController;
 import com.masters.quizapp.model.Question;
 import com.masters.quizapp.service.QuizApiService;
+import com.masters.quizapp.strategy.DifficultySelectionStrategy;
+import com.masters.quizapp.strategy.RandomSelectionStrategy;
 
 import javax.swing.*;
 import java.awt.*;
@@ -165,6 +167,10 @@ public class MainFrame extends JFrame {
         int amount = (Integer) amountDropdown.getSelectedItem();
         String diff = (String) difficultyDropdown.getSelectedItem();
         
+        controller.setSelectionStrategy("any".equalsIgnoreCase(diff)
+                ? new RandomSelectionStrategy()
+                : new DifficultySelectionStrategy(diff));
+
         // Pure delegation to controller
         controller.startNewQuiz(amount, diff);
         

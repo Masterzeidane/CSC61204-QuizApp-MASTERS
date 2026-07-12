@@ -4,6 +4,8 @@ import com.masters.quizapp.model.Question;
 import com.masters.quizapp.model.Quiz;
 import com.masters.quizapp.builder.QuizBuilder;
 import com.masters.quizapp.service.QuizApiService;
+import com.masters.quizapp.strategy.QuestionSelectionStrategy;
+import com.masters.quizapp.strategy.RandomSelectionStrategy;
 
 import java.util.List;
 
@@ -19,6 +21,7 @@ public class QuizController {
     private Quiz currentQuiz;
     private int currentQuestionIndex;
     private int currentScore;
+    private QuestionSelectionStrategy selectionStrategy = new RandomSelectionStrategy();
 
     /**
      * Constructs a new QuizController.
@@ -32,13 +35,23 @@ public class QuizController {
     }
 
     /**
+     * Sets the question selection strategy.
+     *
+     * @param strategy the selection strategy to use
+     */
+    public void setSelectionStrategy(QuestionSelectionStrategy strategy) {
+        this.selectionStrategy = strategy;
+    }
+
+    /**
      * Starts a new quiz by fetching questions of the requested difficulty and initializing the model.
      *
      * @param amount the number of questions to fetch
      * @param difficulty the requested difficulty level
      */
     public void startNewQuiz(int amount, String difficulty) {
-        List<Question> questions = apiService.fetchQuestions(amount, difficulty);
+        List<Question> bank = apiService.fetchQuestions(amount, difficulty);
+        List<Question> questions = selectionStrategy.select(bank, Math.min(amount, bank.size()));
         
         currentQuiz = new QuizBuilder()
                 .setTitle("Trivia Quiz - " + difficulty)

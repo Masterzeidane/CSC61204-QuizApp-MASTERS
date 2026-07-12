@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -37,6 +38,7 @@ public class QuizControllerTest {
             }
         };
         controller = new QuizController(mockApiService);
+        controller.setSelectionStrategy((bank, n) -> new ArrayList<>(bank).subList(0, n));
     }
 
     @Test

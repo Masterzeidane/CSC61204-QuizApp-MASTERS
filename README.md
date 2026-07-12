@@ -7,28 +7,33 @@ The application integrates seamlessly with the **Open Trivia Database (OpenTDB) 
 
 ## Requirements
 * **Java:** Java 17 or higher (Java 21 is currently configured in the POM)
-* **Maven:** (Only required if you wish to recompile the project from source)
+* **Maven:** (Only required if you wish to compile or run tests from source)
 
 ## Run Instructions
 
-For your convenience, the project has been configured with the `maven-assembly-plugin` to compile into a fully executable "Fat Jar" that bundles all external dependencies (like Gson) internally.
+For your convenience, a pre-compiled, fully executable "Fat Jar" (`quizapp.jar`) is provided directly in the root directory. It bundles all external dependencies (like Gson) internally.
 
-Please follow these step-by-step instructions to run the application from your terminal:
+Please follow these instructions to run the application:
 
-### Step 1: Open Terminal
-Open your terminal or command prompt and navigate to the root directory of this project.
+### Method 1: Run the Pre-compiled Jar (Quickest)
+1. Open your terminal or command prompt.
+2. Navigate to the root directory of this project.
+3. Run the following command:
+   ```bash
+   java -jar quizapp.jar
+   ```
 
-### Step 2: (Optional) Build the Jar
-If the `target/` directory does not already contain the compiled `.jar`, you can easily generate it using Maven:
-```bash
-mvn clean package -DskipTests
-```
-
-### Step 3: Execute the Application
-Run the following command from the root of the project to launch the Java Swing GUI:
-```bash
-java -jar target/quizapp-1.0-SNAPSHOT-jar-with-dependencies.jar
-```
+### Method 2: Build and Run from Source
+If you wish to recompile the project from source:
+1. Ensure you have Maven installed.
+2. Run the following command in the project root directory to build the project:
+   ```bash
+   mvn clean package -DskipTests
+   ```
+3. Run the newly compiled jar:
+   ```bash
+   java -jar target/quizapp-1.0-SNAPSHOT-jar-with-dependencies.jar
+   ```
 
 ### Using the Application:
 1. **Setup View:** Select your desired number of questions and difficulty level from the drop-downs, then click **"Start Quiz"**.

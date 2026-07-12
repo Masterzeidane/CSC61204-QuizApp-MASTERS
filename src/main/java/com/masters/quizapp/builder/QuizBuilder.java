@@ -15,6 +15,8 @@ public class QuizBuilder {
 
     private static final String ERR_EMPTY_TITLE = "Quiz title cannot be empty.";
     private static final String ERR_EMPTY_QUESTIONS = "Quiz must contain at least one question.";
+    private static final String ERR_NEGATIVE_TIME_LIMIT = "Time limit cannot be negative.";
+    private static final String ERR_NEGATIVE_SCORE = "Passing score cannot be negative.";
 
     private String title = "";
     private int timeLimit = DEFAULT_TIME_LIMIT;
@@ -40,7 +42,7 @@ public class QuizBuilder {
      */
     public QuizBuilder setTimeLimit(int timeLimit) {
         if (timeLimit < 0) {
-            throw new IllegalArgumentException("Time limit cannot be negative.");
+            throw new IllegalArgumentException(ERR_NEGATIVE_TIME_LIMIT);
         }
         this.timeLimit = timeLimit;
         return this;
@@ -54,7 +56,7 @@ public class QuizBuilder {
      */
     public QuizBuilder setPassingScore(int passingScore) {
         if (passingScore < 0) {
-            throw new IllegalArgumentException("Passing score cannot be negative.");
+            throw new IllegalArgumentException(ERR_NEGATIVE_SCORE);
         }
         this.passingScore = passingScore;
         return this;

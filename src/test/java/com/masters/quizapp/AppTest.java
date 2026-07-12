@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 class AppTest {
 
     @Test
-    void applicationStartsWithoutException() {
+    void main_applicationLaunch_doesNotThrowException() {
         assertDoesNotThrow(() -> App.main(new String[] {}));
     }
 }

@@ -43,6 +43,7 @@ public class MainFrame extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(550, 450);
         setLocationRelativeTo(null);
+        initMenuBar();
 
         cardLayout = new CardLayout();
         mainPanel = new JPanel(cardLayout);
@@ -202,6 +203,43 @@ public class MainFrame extends JFrame {
     private String getSelectedAnswer() {
         ButtonModel selection = optionsGroup.getSelection();
         return selection != null ? selection.getActionCommand() : null;
+    }
+
+    private void initMenuBar() {
+        JMenuBar menuBar = new JMenuBar();
+
+        // File Menu
+        JMenu fileMenu = new JMenu("File");
+        JMenuItem exitItem = new JMenuItem("Exit");
+        exitItem.addActionListener(e -> System.exit(0));
+        fileMenu.add(exitItem);
+        menuBar.add(fileMenu);
+
+        // Help Menu
+        JMenu helpMenu = new JMenu("Help");
+        JMenuItem aboutItem = new JMenuItem("About");
+        aboutItem.addActionListener(e -> showAboutDialog());
+        helpMenu.add(aboutItem);
+        menuBar.add(helpMenu);
+
+        setJMenuBar(menuBar);
+    }
+
+    private void showAboutDialog() {
+        String aboutMessage = "<html>" +
+                "<h2>Educational Testing System</h2>" +
+                "<p><b>Version:</b> 1.0-SNAPSHOT</p>" +
+                "<p><b>Description:</b> An interactive educational testing application featuring dynamic quiz loading and offline fallback.</p>" +
+                "<br/>" +
+                "<p><b>Design Patterns & Architecture:</b></p>" +
+                "<ul>" +
+                "  <li>Model-View-Controller (MVC)</li>" +
+                "  <li>Builder Pattern (for Quiz construction)</li>" +
+                "  <li>Strategy Pattern (for Question selection)</li>" +
+                "</ul>" +
+                "<p><b>Dependencies:</b> Gson, JUnit 5, JaCoCo</p>" +
+                "</html>";
+        JOptionPane.showMessageDialog(this, aboutMessage, "About Educational Testing System", JOptionPane.INFORMATION_MESSAGE);
     }
 
 }
